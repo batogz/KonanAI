@@ -33,8 +33,8 @@ int printBoard(Board *b){
         for (int j = 0; j < 8; j++){
             if ((b->board[i] & (1 << (7-j))) == (1 << (7-j))){
                 if (b->blackThenWhite && i%2 == j%2) printf("B");
-                else if(b->blackThenWhite && i%2 != j%2) printf("W");
-                else if(!b->blackThenWhite && i%2 == j%2) printf("B");
+                else if (b->blackThenWhite && i%2 != j%2) printf("W");
+                else if (!b->blackThenWhite && i%2 == j%2) printf("B");
                 else printf("W");
             }
             else printf("O");
