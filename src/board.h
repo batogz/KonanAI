@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdint.h>
+#include <harambe.h>
 
 #define BOARDSZ 8
 #define BOARDAREA 64
