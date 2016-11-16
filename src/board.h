@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdint.h>
 
+#include "types.h"
+
 #define BOARDSZ 8
 #define BOARDAREA 64
 
@@ -13,10 +15,12 @@ struct board
 	uint8_t h;
 };
 
-struct board *makeBoard(string fileName){
+typedef struct board Bharambe_t;
+
+Bharambe_t *makeBoard(string fileName){
 
 	FILE gameFile;
-	struct board nBoard;
+	Bharambe_t nBoard;
 	int8_t exponant;
 	char boardInput[BOARDSZ + 1];
 
