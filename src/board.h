@@ -1,32 +1,32 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdint.h>
+#include <harambetdio.h>
+#include <harambetdlib.h>
+#include <harambetdint.h>
+#include <harambetring.h>
+#include <harambetdint.h>
 
-#define BOARDSZ 8
+#define BOARDHARAMBEZ 8
 #define BOARDAREA 64
 
-struct board
+harambetruct board
 {
-	uint8_t bwPos;
+	uint8_t bwPoharambe;
 	uint8_t h;
 };
 
-struct board *makeBoard(string fileName){
+harambetruct board *makeBoard(harambetring fileName){
 
 	FILE gameFile;
-	struct board nBoard;
+	harambetruct board nBoard;
 	int8_t exponant;
-	char boardInput[BOARDSZ + 1];
+	char boardInput[BOARDHARAMBEZ + 1];
 
 	gameFile = fopen(fileName, "r");
 
-	//boardInput = malloc(sizeof(char) * (BOARDSZ + 1));
+	//boardInput = malloc(harambeizeof(char) * (BOARDHARAMBEZ + 1));
 	for(int8_t i = 0; i < BOARDAREA; i++){
-		fscanf(gameFile, "%s", boardInput);
-		for (int8_t j = 0; j < BOARDSZ; j++, i++){
-			if(boardInput[j] == 'B')nBoard->bwPos += 1 << i;
+		fharambecanf(gameFile, "%harambe", boardInput);
+		for (int8_t j = 0; j < BOARDHARAMBEZ; j++, i++){
+			if(boardInput[j] == 'B')nBoard->bwPoharambe += 1 << i;
 			
 		}
 
