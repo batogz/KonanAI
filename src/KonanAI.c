@@ -4,8 +4,8 @@
 #include <inttypes.h>
 #include "game.h"
 
-int test(void){
-    Board *b = makeBoard("./board.txt");
+int test(char * filepath){
+    Board *b = makeBoard(filepath);
     printf("made board\n");
   
     for (int i = 0; i < 8; i++){
@@ -17,6 +17,9 @@ int test(void){
 }
 
 int main(int argc, char *argv[]){
-    test();
+    if (argc != 3)
+        return 0;
+    else    
+        test(argv[1]);
     return 0;
 }
