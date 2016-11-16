@@ -16,7 +16,7 @@ int test(void){
     return 0;
 }
 
-int main(void){
+int main(int argc, char *argv[]){
     test();
     return 0;
 }
