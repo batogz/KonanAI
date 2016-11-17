@@ -12,9 +12,9 @@ typedef struct Boards{
     bool blackThenWhite;
 } Board;
 
-Board * makeBoard(char *filepath);
+Board *makeBoard(char *filepath);
 int printBoard(Board *b);
-int makeMove(char *A, char *B, char turn, Board b);
-uint8_t * validMoves(Board *b);
+int makeMove(char *move, Board *b);
+uint8_t *validMoves(Board *b);
 
 #endif
