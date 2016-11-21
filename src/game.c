@@ -6,15 +6,15 @@ Board *makeBoard(char *filepath){
     if (b == NULL) exit(-1);
     char line[8];
     bool bwFlag = false;
-    for (int i = 0; i < 8; i++){
+    for (int j = 0; j < 8; j++){
         fscanf(fp, "%s", line);
-        b->board[i] = 0;
-        for (int j = 0; j < 8; j++){
-            if (line[j] != 'O'){
-                b->board[i] += (1<<(7-j));
+        b->board[j] = 0;
+        for (int i = 0; i < 8; i++){
+            if (line[i] != 'O'){
+                b->board[j] += (1<<(7-i));
                 if (!bwFlag){
-                    if ((i%2 == j%2 && line[j] == 'B') || 
-                        (i%2 != j%2 && line[j] == 'W'))
+                    if ((i%2 == j%2 && line[i] == 'B') || 
+                        (i%2 != j%2 && line[i] == 'W'))
                         b->blackThenWhite = true;
                     else
                         b->blackThenWhite = false;
@@ -28,10 +28,10 @@ Board *makeBoard(char *filepath){
 
 int printBoard(Board *b){
     printf("+--------+\n");
-    for (int i = 0; i < 8; i++){
+    for (int j = 0; j < 8; j++){
         printf("|");
-        for (int j = 0; j < 8; j++){
-            if ((b->board[i] & (1<<(7-j))) == (1<<(7-j))){
+        for (int i = 0; i < 8; i++){
+            if ((b->board[j] & (1<<(7-i))) == (1<<(7-i))){
                 if (b->blackThenWhite && i%2 == j%2) printf("B");
                 else if (b->blackThenWhite && i%2 != j%2) printf("W");
                 else if (!b->blackThenWhite && i%2 == j%2) printf("B");
@@ -50,86 +50,86 @@ int makeMove(char *move, Board *b){
     char *colNumbers = "87654321";
     char *rowLetters = "ABCDEFGH";
 
-    int j1 = strchr(rowLetters, move[0]) - rowLetters;
-    int i1 = strchr(colNumbers, move[1]) - colNumbers;
+    int i1 = strchr(rowLetters, move[0]) - rowLetters;
+    int j1 = strchr(colNumbers, move[1]) - colNumbers;
     if (strlen(move) == 5){
-        int j2 = strchr(rowLetters, move[3]) - rowLetters;
-        int i2 = strchr(colNumbers, move[4]) - colNumbers;
-        b->board[i2] ^= (1<<(7-j2));
-        int j3;
-        if(j1 > j2) j3 = j2+1;
-        else if(j1 < j2) j3 = j1+1;
-        else j3 = j1;
+        int i2 = strchr(rowLetters, move[3]) - rowLetters;
+        int j2 = strchr(colNumbers, move[4]) - colNumbers;
+        b->board[j2] ^= (1<<(7-i2));
         int i3;
         if(i1 > i2) i3 = i2+1;
         else if(i1 < i2) i3 = i1+1;
         else i3 = i1;
-        b->board[i3] ^= (1<<(7-j3));
+        int j3;
+        if(j1 > j2) j3 = j2+1;
+        else if(j1 < j2) j3 = j1+1;
+        else j3 = j1;
+        b->board[j3] ^= (1<<(7-i3));
     }
-    b->board[i1] ^= (1<<(7-j1));
+    b->board[j1] ^= (1<<(7-i1));
     return 0;
 }
 
 int numberOfMoves(Board *b, char turn){
     int numberOfMoves = 0;    
-    int startj;
+    int starti;
     if((b->blackThenWhite && turn == 'B') ||
         (!b->blackThenWhite && turn == 'W'))
-        startj = 0;
+        starti = 0;
     else
-        startj = 1;
-    for(int i = 0; i < 2; i++){
-        int8_t checkDown = b->board[i] & b->board[i+1] & ~b->board[i+2];
-        for(int j = startj; j < 6; j+=2){
-            if((((b->board[i]) & (7<<(5-j))) ^ (1<<(5-j))) == (7<<(5-j)))
+        starti = 1;
+    for(int j = 0; j < 2; j++){
+        int8_t checkDown = b->board[j] & b->board[j+1] & ~b->board[j+2];
+        for(int i = starti; i < 6; i+=2){
+            if((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i)))
                 numberOfMoves++;
-            if((((b->board[i]) & (7<<(5-j))) ^ (1<<(7-j))) == (7<<(5-j)))
+            if((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i)))
                 numberOfMoves++;
-            if((checkDown & (1<<(7-j))) == (1<<(7-j)))
-                numberOfMoves++;
-        }
-        for(int j = startj + 6; j < 8; j+=2){
-            if((checkDown & (1<<(7-j))) == (1<<(7-j)))
+            if((checkDown & (1<<(7-i))) == (1<<(7-i)))
                 numberOfMoves++;
         }
-        startj ^= 1;
+        for(int i = starti + 6; i < 8; i+=2){
+            if((checkDown & (1<<(7-i))) == (1<<(7-i)))
+                numberOfMoves++;
+        }
+        starti ^= 1;
     }
-    for(int i = 2; i < 6; i++){
-    int8_t checkDown = b->board[i] & b->board[i+1] & ~b->board[i+2];
-    int8_t checkAbove = b->board[i] & b->board[i-1] & ~b->board[i-2];
-        for(int j = startj; j < 6; j+=2){
-            if((((b->board[i]) & (7<<(5-j))) ^ (1<<(5-j))) == (7<<(5-j)))
+    for(int j = 2; j < 6; j++){
+        int8_t checkDown = b->board[j] & b->board[j+1] & ~b->board[j+2];
+        int8_t checkAbove = b->board[j] & b->board[j-1] & ~b->board[j-2];
+        for(int i = starti; i < 6; i+=2){
+            if((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i)))
                 numberOfMoves++;
-            if((((b->board[i]) & (7<<(5-j))) ^ (1<<(7-j))) == (7<<(5-j)))
+            if((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i)))
                 numberOfMoves++;
-            if((checkDown & (1<<(7-j))) == (1<<(7-j)))
+            if((checkDown & (1<<(7-i))) == (1<<(7-i)))
                 numberOfMoves++;
-            if((checkAbove & (1<<(7-j))) == (1<<(7-j)))
-                numberOfMoves++;
-        }
-        for(int j = startj + 6; j < 8; j+=2){
-            if((checkDown & (1<<(7-j))) == (1<<(7-j)))
-                numberOfMoves++;
-            if((checkAbove & (1<<(7-j))) == (1<<(7-j)))
+            if((checkAbove & (1<<(7-i))) == (1<<(7-i)))
                 numberOfMoves++;
         }
-        startj ^= 1;
+        for(int i = starti + 6; i < 8; i+=2){
+            if((checkDown & (1<<(7-i))) == (1<<(7-i)))
+                numberOfMoves++;
+            if((checkAbove & (1<<(7-i))) == (1<<(7-i)))
+                numberOfMoves++;
+        }
+        starti ^= 1;
     }
-    for(int i = 6; i < 8 ; i++){
-        int8_t checkAbove = b->board[i] & b->board[i-1] & ~b->board[i-2];
-        for(int j = startj; j < 6; j+=2){
-            if((((b->board[i]) & (7<<(5-j))) ^ (1<<(5-j))) == (7<<(5-j)))
+    for(int j = 6; j < 8 ; j++){
+        int8_t checkAbove = b->board[j] & b->board[j-1] & ~b->board[j-2];
+        for(int i = starti; i < 6; i+=2){
+            if((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i)))
                 numberOfMoves++;
-            if((((b->board[i]) & (7<<(5-j))) ^ (1<<(7-j))) == (7<<(5-j)))
+            if((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i)))
                 numberOfMoves++;
-            if((checkAbove & (1<<(7-j))) == (1<<(7-j)))
-                numberOfMoves++;
-        }
-        for(int j = startj + 6; j < 8; j+=2){
-            if((checkAbove & (1<<(7-j))) == (1<<(7-j)))
+            if((checkAbove & (1<<(7-i))) == (1<<(7-i)))
                 numberOfMoves++;
         }
-        startj ^= 1;
+        for(int i = starti + 6; i < 8; i+=2){
+            if((checkAbove & (1<<(7-i))) == (1<<(7-i)))
+                numberOfMoves++;
+        }
+        starti ^= 1;
     }
     return numberOfMoves;
 }
