@@ -15,6 +15,7 @@ typedef struct Boards{
 Board *makeBoard(char *filepath);
 int printBoard(Board *b);
 int makeMove(char *move, Board *b);
-uint8_t *validMoves(Board *b);
+int numberOfMoves(Board *b, char turn);
+char *validMoves(Board *b, char turn);
 
 #endif
