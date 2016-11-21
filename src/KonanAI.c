@@ -7,6 +7,8 @@
 int test(char * filepath){
     Board *b = makeBoard(filepath);
     printBoard(b);
+    printf("number of black moves: %d\n", numberOfMoves(b, 'B'));
+    printf("number of white moves: %d\n", numberOfMoves(b, 'W'));
     makeMove("D5", b);
     printBoard(b);
     printf("number of black moves: %d\n", numberOfMoves(b, 'B'));
