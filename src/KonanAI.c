@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include "game.h"
+#include "algo.h"
 
 int test(char * filepath){
     Board *b = makeBoard(filepath);
@@ -27,7 +28,15 @@ int test(char * filepath){
     printf("number of black moves: %d\n", numberOfMoves(b, 'B'));
     printf("number of white moves: %d\n", numberOfMoves(b, 'W'));
     moves = validMoves(b, 'B');
-    printf("Black moves: %s\n", moves);
+    printf("Black moves: %s\n", moves);    
+    printf("=================================\n");
+    Board ** boardStates = branchs(b, 'B', moves);
+    for(int i = 0; i < ((int)strlen(moves)/5); i++){
+        printBoard(boardStates[i]);
+        free(boardStates[i]);
+    }
+    free(boardStates);
+    printf("=================================\n");
     free(moves);
     makeMove("F5-D5", b);
 
