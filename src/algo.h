@@ -8,14 +8,15 @@
 #include<string.h>
 
 struct node{
-    int8_t heuristic;
-    int8_t cost;
-    int8_t f;  // heuristic + cost
+    int heuristic;
+    int cost;
+    int f;  // heuristic + cost
+    char move[6];    
     struct node *parent;    
     Board b;
     char turn;
-}
-
+};
+Board **branchs(Board *b, char turn);
 char *negaMaxSearch(Board *b);
 
 #endif
