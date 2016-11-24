@@ -30,7 +30,7 @@ int test(char * filepath){
     moves = validMoves(b, 'B');
     printf("Black moves: %s\n", moves);    
     printf("=================================\n");
-    Board ** boardStates = branchs(b, 'B');
+    Board ** boardStates = branchs(b, 'B', moves);
     for(int i = 0; i < ((int)strlen(moves)/5); i++){
         printBoard(boardStates[i]);
         free(boardStates[i]);
