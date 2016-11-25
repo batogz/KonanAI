@@ -75,7 +75,4 @@ char *negaMaxSearch(Board *b, char turn, int maxDepth){
     return move;
 }
 
-char *random(Board *b, char turn){
-
-}
 

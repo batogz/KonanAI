@@ -98,9 +98,34 @@ int test(char * filepath){
 
 int main(int argc, char *argv[]){
     if (argc != 3)
-        return 0;
+        return 1;
     else{    
-        test(argv[1]);
+        //test(argv[1]);
+        char *fp = argv[1];
+        char turn = *argv[2];
+        Board *b = makeBoard(fp);
+        printBoard(b);
+        char *move; 
+        while(numberOfMoves(b, 'B') != 0 || numberOfMoves(b, 'W') != 0){
+            move = negaMaxSearch(b, turn, 2);
+            makeMove(move, b);
+            printBoard(b);
+            free(move);
+            /*
+            printf("Enter move: ");
+            scanf("%s", move);
+            if(move[0] == 'Q') break;
+            */
+            
+            (turn == 'B') ? (turn = 'W') : (turn = 'B');
+            if (numberOfMoves(b, 'W') == 0) break;
+            move = negaMaxSearch(b, turn, 2);
+            (turn == 'B') ? (turn = 'W') : (turn = 'B');
+
+            makeMove(move, b);
+            printBoard(b);
+            free(move);
+        }
     }
     return 0;
 }
