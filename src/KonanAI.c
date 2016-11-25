@@ -7,6 +7,9 @@
 
 int test(char * filepath){
     Board *b = makeBoard(filepath);
+    makeMove("D8-D2", b);
+    printBoard(b);
+    /*    
     char * moves;
     Board ** boardStates;
     printBoard(b);
@@ -15,7 +18,7 @@ int test(char * filepath){
     moves = validMoves(b, 'B');
     printf("Black moves: %s\n", moves);
     printf("=================================\n");
-    boardStates = branchs(b, 'B', moves);
+    boardStates = branches(b, 'B', moves);
     for(int i = 0; i < ((int)strlen(moves)/2); i++){
         printBoard(boardStates[i]);
         free(boardStates[i]);
@@ -31,7 +34,7 @@ int test(char * filepath){
     moves = validMoves(b, 'W');
     printf("White moves: %s\n", moves);
     printf("=================================\n");
-    boardStates = branchs(b, 'W', moves);
+    boardStates = branches(b, 'W', moves);
     for(int i = 0; i < ((int)strlen(moves)/2); i++){
         printBoard(boardStates[i]);
         free(boardStates[i]);
@@ -47,7 +50,7 @@ int test(char * filepath){
     moves = validMoves(b, 'B');
     printf("Black moves: %s\n", moves);    
     printf("=================================\n");
-    boardStates = branchs(b, 'B', moves);
+    boardStates = branches(b, 'B', moves);
     for(int i = 0; i < ((int)strlen(moves)/5); i++){
         printBoard(boardStates[i]);
         free(boardStates[i]);
@@ -87,7 +90,7 @@ int test(char * filepath){
     moves = validMoves(b, 'B');
     printf("Black moves: %s\n", moves);
     free(moves);
-
+    */
     free(b);
 
     return 0;

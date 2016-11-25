@@ -1,6 +1,6 @@
 #include"algo.h"
 
-Board **branchs(Board *b, char turn, char *moves){
+Board **branches(Board *b, char turn, char *moves){
     char *move = calloc(6, sizeof(char));
     int numberOfMoves = strlen(moves);
     if (numberOfMoves == 4){
@@ -39,7 +39,7 @@ int negaMax(Board *b, int depth, char turn){
     }
     int max = -1000;
     char *moves = validMoves(b, turn);
-    Board **allMoves = branchs(b, turn, moves);
+    Board **allMoves = branches(b, turn, moves);
     int numberOfMoves = strlen(moves);
     (numberOfMoves == 4) ? (numberOfMoves/=2) : (numberOfMoves/=5);
     for (int i = 0; i < numberOfMoves; i++){
@@ -57,7 +57,7 @@ char *negaMaxSearch(Board *b, char turn, int maxDepth){
     int numberOfMoves = strlen(moves);
     (numberOfMoves == 4) ? (numberOfMoves/=2) : (numberOfMoves/=5);
     int moveScore[numberOfMoves];
-    Board **allMoves = branchs(b, turn, moves);
+    Board **allMoves = branches(b, turn, moves);
     (turn == 'B') ? (turn = 'W') : (turn = 'B');
     int max = -1000;
     int maxIndex = -1;
