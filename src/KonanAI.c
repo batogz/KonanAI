@@ -105,11 +105,20 @@ int main(int argc, char *argv[]){
         char turn = *argv[2];
         Board *b = makeBoard(fp);
         printBoard(b);
-        char *move; 
-        while(numberOfMoves(b, 'B') != 0 || numberOfMoves(b, 'W') != 0){
-            move = negaMaxSearch(b, turn, 2);
+        char *move;
+        int BWins=0, WWins=0; //remove
+        for(int i = 0; i < 100; i++){ ; //remove
+
+        while(1){
+            if (numberOfMoves(b, turn) == 0){
+                printf("%c loses game %d\n", turn, i+1);
+                WWins++; //remove                
+                break;
+            }             
+            move = negaMaxSearch(b, turn, 6);
+            //printf("%c's move: %s\n", turn, move);
             makeMove(move, b);
-            printBoard(b);
+            //printBoard(b);
             free(move);
             /*
             printf("Enter move: ");
@@ -118,14 +127,25 @@ int main(int argc, char *argv[]){
             */
             
             (turn == 'B') ? (turn = 'W') : (turn = 'B');
-            if (numberOfMoves(b, 'W') == 0) break;
-            move = negaMaxSearch(b, turn, 2);
+            if (numberOfMoves(b, turn) == 0){
+                printf("%c loses game %d\n", turn, i+1);
+                BWins++; //remove
+                break;
+            }
+            move = randomMove(b, turn); //negaMaxSearch(b, turn, 10);
+            //printf("%c's move: %s\n", turn, move);
             (turn == 'B') ? (turn = 'W') : (turn = 'B');
 
             makeMove(move, b);
-            printBoard(b);
+            //printBoard(b);
             free(move);
+            //printf("\n");
         }
+        b = makeBoard(fp);
+        turn = *argv[2];
+        }//remove
+        printf("Black: %d\nWhite: %d\n",BWins, WWins);
+    free(b);
     }
     return 0;
 }
