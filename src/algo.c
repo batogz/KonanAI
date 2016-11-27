@@ -31,7 +31,7 @@ Board **branches(Board *b, char turn, char *moves){
     
 }
 
-int negaMax(Board *b, int depth, char turn, int A, int B){
+int negaMax(Board *b, int depth, char turn, int A, int B, double tTime,  time_t startTime){
     if (depth == 0 || numberOfMoves(b, 'B') == 0 || numberOfMoves(b, 'W') == 0){
         char oTurn;
         (turn == 'B') ? (oTurn = 'W') : (oTurn = 'B');
@@ -44,7 +44,16 @@ int negaMax(Board *b, int depth, char turn, int A, int B){
     (numberOfMoves == 4) ? (numberOfMoves/=2) : (numberOfMoves/=5);
     (turn == 'B') ? (turn = 'W') : (turn = 'B');
     for (int i = 0; i < numberOfMoves; i++){
-        int score = -negaMax(allMoves[i], depth-1, turn, -B, -A);
+        int score = -negaMax(allMoves[i], depth-1, turn, -B, -A, tTime, startTime);
+        //printf("difftime: %f, %f\n", difftime(time(NULL), startTime), tTime);
+        if(difftime(time(NULL), startTime) >= tTime){
+            for (int j = i; j < numberOfMoves; j++){
+                free(allMoves[j]);
+            }
+            free(allMoves);
+            free(moves);
+            return -1000;
+        }
         if (score > max)
             max = score;
         if (score > A)
@@ -57,6 +66,7 @@ int negaMax(Board *b, int depth, char turn, int A, int B){
             free(moves);
             return A;
         }
+
         free(allMoves[i]);
     }
     free(allMoves);
@@ -64,33 +74,52 @@ int negaMax(Board *b, int depth, char turn, int A, int B){
     return max;
 }
 
-char *negaMaxSearch(Board *b, char turn, int maxDepth){
+char *negaMaxSearch(Board *b, char turn, double tTime){
     char *moves = validMoves(b, turn);
     int numberOfMoves = strlen(moves);
     (numberOfMoves == 4) ? (numberOfMoves/=2) : (numberOfMoves/=5);
+    int moveSize;
+    (strlen(moves) == 4) ? (moveSize = 2) : (moveSize = 5);
+    char *move = calloc(moveSize+1, sizeof(char));
     int moveScore[numberOfMoves];
     Board **allStates;
     int max = -1000;
     int A = -1000;
     int B = 1000;
     int maxIndex = -1;
-    //for (int depth = 0; depth < maxDepth; depth +=2){
+    time_t startTime = time(NULL);
+    for (int depth = 2;; depth +=2){
         allStates = branches(b, turn, moves);
         for (int i = 0; i < numberOfMoves; i++){
             //(turn == 'B') ? (turn = 'W') : (turn = 'B');            
-            moveScore[i] = negaMax(allStates[i], maxDepth-1, turn, A, B);
+            moveScore[i] = negaMax(allStates[i], depth-1, turn, A, B, tTime, startTime);
+            //printf("difftime: %f, %f\n", difftime(time(NULL), startTime), tTime);
+            if(difftime(time(NULL), startTime) >= tTime){
+                /*for (int j = i; j < numberOfMoves; j++){
+                    free(allStates[j]);
+                }
+                free(allStates);
+                free(moves);*/                
+                break;
+            }
             if (moveScore[i] > max){
                 max = moveScore[i];
                 maxIndex = i;
             }
+
             free(allStates[i]);
         }
         free(allStates);
-    //}
-    int moveSize;
-    (strlen(moves) == 4) ? (moveSize = 2) : (moveSize = 5);
-    char *move = calloc(moveSize+1, sizeof(char));
-    strncpy(move, (moves + moveSize*maxIndex), moveSize);
+        if(difftime(time(NULL), startTime) >= tTime){
+            /*for (int j = i; j < numberOfMoves; j++){
+                free(allStates[j]);
+            }
+            free(allStates);
+            free(moves);*/                
+            break;
+        }
+        strncpy(move, (moves + moveSize*maxIndex), moveSize);
+    }
     free(moves);
     return move;
 }

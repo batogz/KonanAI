@@ -8,7 +8,7 @@
 #include<string.h>
 #include<time.h>
 
-char *negaMaxSearch(Board *b, char turn, int maxDepth);
+char *negaMaxSearch(Board *b, char turn, double tTime);
 char *randomMove(Board *b, char turn);
 
 #endif

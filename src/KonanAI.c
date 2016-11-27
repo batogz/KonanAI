@@ -5,6 +5,8 @@
 #include "game.h"
 #include "algo.h"
 
+#define THINKINGTIME 2
+
 int test(char * filepath){
     Board *b = makeBoard(filepath);
     makeMove("D8-D2", b);
@@ -115,10 +117,10 @@ int main(int argc, char *argv[]){
                 WWins++; //remove                
                 break;
             }             
-            move = negaMaxSearch(b, turn, 6);
-            //printf("%c's move: %s\n", turn, move);
+            move = randomMove(b, turn); //negaMaxSearch(b, turn, THINKINGTIME);
+            printf("%c's move: %s\n", turn, move);
             makeMove(move, b);
-            //printBoard(b);
+            printBoard(b);
             free(move);
             /*
             printf("Enter move: ");
@@ -132,8 +134,8 @@ int main(int argc, char *argv[]){
                 BWins++; //remove
                 break;
             }
-            move = randomMove(b, turn); //negaMaxSearch(b, turn, 2);
-            //printf("%c's move: %s\n", turn, move);
+            move = negaMaxSearch(b, turn, THINKINGTIME);
+            printf("%c's move: %s\n", turn, move);
             (turn == 'B') ? (turn = 'W') : (turn = 'B');
 
             makeMove(move, b);
@@ -142,10 +144,10 @@ int main(int argc, char *argv[]){
             //printf("\n");
         }
         free(b);
-        b = makeBoard(fp);
-        turn = *argv[2];
+        b = makeBoard(fp); //remove
+        turn = *argv[2]; //remove
         }//remove
-        printf("Black: %d\nWhite: %d\n",BWins, WWins);
+        printf("Black: %d\nWhite: %d\n",BWins, WWins);  //remove
         free(b);
     }
     return 0;
