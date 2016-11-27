@@ -6,17 +6,9 @@
 #include<stdint.h>
 #include<stdbool.h>
 #include<string.h>
+#include<time.h>
 
-struct node{
-    int heuristic;
-    int cost;
-    int f;  // heuristic + cost
-    char move[6];    
-    struct node *parent;    
-    Board b;
-    char turn;
-};
-Board **branchs(Board *b, char turn, char *moves);
 char *negaMaxSearch(Board *b, char turn, int maxDepth);
+char *randomMove(Board *b, char turn);
 
 #endif

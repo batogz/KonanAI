@@ -57,15 +57,19 @@ int makeMove(char *move, Board *b){
         int i2 = strchr(colLetters, move[3]) - colLetters;
         int j2 = strchr(rowNumbers, move[4]) - rowNumbers;
         b->board[j2] ^= (1<<(7-i2));
-        int i3;
-        if (i1 > i2) i3 = i2+1;
-        else if (i1 < i2) i3 = i1+1;
-        else i3 = i1;
-        int j3;
-        if(j1 > j2) j3 = j2+1;
-        else if(j1 < j2) j3 = j1+1;
-        else j3 = j1;
-        b->board[j3] ^= (1<<(7-i3));
+        int jumps = (i1-i2)+(j1-j2);
+        if (jumps < 0) jumps *= -1;
+        for(int jump = 1; jump < jumps; jump+=2){
+            int i3;
+            if (i1 > i2) i3 = i2+jump;
+            else if (i1 < i2) i3 = i1+jump;
+            else i3 = i1;
+            int j3;
+            if(j1 > j2) j3 = j2+jump;
+            else if(j1 < j2) j3 = j1+jump;
+            else j3 = j1;
+            b->board[j3] ^= (1<<(7-i3));
+        }
     }
     b->board[j1] ^= (1<<(7-i1));
     return 0;
