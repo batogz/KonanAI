@@ -32,7 +32,7 @@ Board **branches(Board *b, char turn, char *moves){
 }
 
 int negaMax(Board *b, int depth, char turn, int A, int B){
-    if (depth == 0){
+    if (depth == 0 || numberOfMoves(b, 'B') == 0 || numberOfMoves(b, 'W') == 0){
         char oTurn;
         (turn == 'B') ? (oTurn = 'W') : (oTurn = 'B');
         return numberOfMoves(b, turn) - numberOfMoves(b, oTurn);
@@ -49,8 +49,14 @@ int negaMax(Board *b, int depth, char turn, int A, int B){
             max = score;
         if (score > A)
             A = score;
-        if (A >= B)
+        if (A >= B){
+            for (int j = i; j < numberOfMoves; j++){
+                free(allMoves[j]);
+            }
+            free(allMoves);
+            free(moves);
             return A;
+        }
         free(allMoves[i]);
     }
     free(allMoves);

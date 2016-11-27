@@ -107,7 +107,7 @@ int main(int argc, char *argv[]){
         printBoard(b);
         char *move;
         int BWins=0, WWins=0; //remove
-        for(int i = 0; i < 100; i++){ ; //remove
+        for(int i = 0; i < 1; i++){ ; //remove
 
         while(1){
             if (numberOfMoves(b, turn) == 0){
@@ -132,7 +132,7 @@ int main(int argc, char *argv[]){
                 BWins++; //remove
                 break;
             }
-            move = randomMove(b, turn); //negaMaxSearch(b, turn, 10);
+            move = randomMove(b, turn); //negaMaxSearch(b, turn, 2);
             //printf("%c's move: %s\n", turn, move);
             (turn == 'B') ? (turn = 'W') : (turn = 'B');
 
@@ -141,11 +141,12 @@ int main(int argc, char *argv[]){
             free(move);
             //printf("\n");
         }
+        free(b);
         b = makeBoard(fp);
         turn = *argv[2];
         }//remove
         printf("Black: %d\nWhite: %d\n",BWins, WWins);
-    free(b);
+        free(b);
     }
     return 0;
 }
