@@ -95,11 +95,9 @@ char *negaMaxSearch(Board *b, char turn, double tTime){
             moveScore[i] = negaMax(allStates[i], depth-1, turn, A, B, tTime, startTime);
             //printf("difftime: %f, %f\n", difftime(time(NULL), startTime), tTime);
             if(difftime(time(NULL), startTime) >= tTime){
-                /*for (int j = i; j < numberOfMoves; j++){
+                for (int j = i; j < numberOfMoves; j++){
                     free(allStates[j]);
-                }
-                free(allStates);
-                free(moves);*/                
+                }   
                 break;
             }
             if (moveScore[i] > max){
@@ -110,12 +108,7 @@ char *negaMaxSearch(Board *b, char turn, double tTime){
             free(allStates[i]);
         }
         free(allStates);
-        if(difftime(time(NULL), startTime) >= tTime){
-            /*for (int j = i; j < numberOfMoves; j++){
-                free(allStates[j]);
-            }
-            free(allStates);
-            free(moves);*/                
+        if(difftime(time(NULL), startTime) >= tTime){              
             break;
         }
         strncpy(move, (moves + moveSize*maxIndex), moveSize);

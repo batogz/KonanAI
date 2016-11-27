@@ -117,7 +117,7 @@ int main(int argc, char *argv[]){
                 WWins++; //remove                
                 break;
             }             
-            move = randomMove(b, turn); //negaMaxSearch(b, turn, THINKINGTIME);
+            move = negaMaxSearch(b, turn, THINKINGTIME);
             printf("%c's move: %s\n", turn, move);
             makeMove(move, b);
             printBoard(b);
@@ -134,7 +134,7 @@ int main(int argc, char *argv[]){
                 BWins++; //remove
                 break;
             }
-            move = negaMaxSearch(b, turn, THINKINGTIME);
+            move = randomMove(b, turn); //negaMaxSearch(b, turn, THINKINGTIME);
             printf("%c's move: %s\n", turn, move);
             (turn == 'B') ? (turn = 'W') : (turn = 'B');
 
