@@ -31,7 +31,7 @@ Board **branches(Board *b, char turn, char *moves){
     
 }
 
-int negaMax(Board *b, int depth, char turn){
+int negaMax(Board *b, int depth, char turn, int A, int B){
     if (depth == 0){
         char oTurn;
         (turn == 'B') ? (oTurn = 'W') : (oTurn = 'B');
@@ -44,9 +44,13 @@ int negaMax(Board *b, int depth, char turn){
     (numberOfMoves == 4) ? (numberOfMoves/=2) : (numberOfMoves/=5);
     (turn == 'B') ? (turn = 'W') : (turn = 'B');
     for (int i = 0; i < numberOfMoves; i++){
-        int score = -negaMax(allMoves[i], depth-1, turn);
+        int score = -negaMax(allMoves[i], depth-1, turn, -B, -A);
         if (score > max)
             max = score;
+        if (score > A)
+            A = score;
+        if (A >= B)
+            return A;
         free(allMoves[i]);
     }
     free(allMoves);
@@ -61,11 +65,14 @@ char *negaMaxSearch(Board *b, char turn, int maxDepth){
     int moveScore[numberOfMoves];
     Board **allStates;
     int max = -1000;
+    int A = -1000;
+    int B = 1000;
     int maxIndex = -1;
     //for (int depth = 0; depth < maxDepth; depth +=2){
         allStates = branches(b, turn, moves);
         for (int i = 0; i < numberOfMoves; i++){
-            moveScore[i] = negaMax(allStates[i], maxDepth-1, turn);
+            //(turn == 'B') ? (turn = 'W') : (turn = 'B');            
+            moveScore[i] = negaMax(allStates[i], maxDepth-1, turn, A, B);
             if (moveScore[i] > max){
                 max = moveScore[i];
                 maxIndex = i;
