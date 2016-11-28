@@ -141,6 +141,7 @@ int main(int argc, char *argv[]){
             //free(move);
             (turn == 'B') ? (turn = 'W') : (turn = 'B');
         }
+        free(oppMove);
         free(b);
         //b = makeBoard(fp); //remove
         //turn = *argv[2]; //remove
