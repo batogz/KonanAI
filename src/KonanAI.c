@@ -106,49 +106,47 @@ int main(int argc, char *argv[]){
         char *fp = argv[1];
         char turn = *argv[2];
         Board *b = makeBoard(fp);
-        printBoard(b);
+        //printBoard(b);
         char *move;
-        int BWins=0, WWins=0; //remove
-        for(int i = 0; i < 1; i++){ ; //remove
+        char *oppMove = calloc(6, sizeof(char));
+        //int BWins=0, WWins=0; //remove
+        //for(int i = 0; i < 1; i++){ ; //remove
 
         while(1){
             if (numberOfMoves(b, turn) == 0){
-                printf("%c loses game %d\n", turn, i+1);
-                WWins++; //remove                
+                //printf("%c loses game %d\n", turn, i+1); //remove
+                //WWins++; //remove                
                 break;
-            }             
+            }
+             
             move = negaMaxSearch(b, turn, THINKINGTIME);
-            printf("%c's move: %s\n", turn, move);
             makeMove(move, b);
-            printBoard(b);
+            printf("%s\n", move);
             free(move);
-            /*
-            printf("Enter move: ");
-            scanf("%s", move);
-            if(move[0] == 'Q') break;
-            */
+            //printBoard(b);
+
+            scanf("%s", oppMove);
+            makeMove(oppMove, b);
+            memset(oppMove, '\0', 6);
             
             (turn == 'B') ? (turn = 'W') : (turn = 'B');
             if (numberOfMoves(b, turn) == 0){
-                printf("%c loses game %d\n", turn, i+1);
-                BWins++; //remove
+                //printf("%c loses game %d\n", turn, i+1);
+                //BWins++; //remove
                 break;
             }
-            move = randomMove(b, turn); //negaMaxSearch(b, turn, THINKINGTIME);
-            printf("%c's move: %s\n", turn, move);
-            (turn == 'B') ? (turn = 'W') : (turn = 'B');
-
-            makeMove(move, b);
+            //move = randomMove(b, turn); //negaMaxSearch(b, turn, THINKINGTIME);
+            //printf("%c's move: %s\n", turn, move);
             //printBoard(b);
-            free(move);
-            //printf("\n");
+            //free(move);
+            (turn == 'B') ? (turn = 'W') : (turn = 'B');
         }
         free(b);
-        b = makeBoard(fp); //remove
-        turn = *argv[2]; //remove
-        }//remove
-        printf("Black: %d\nWhite: %d\n",BWins, WWins);  //remove
-        free(b);
+        //b = makeBoard(fp); //remove
+        //turn = *argv[2]; //remove
+        //}//remove
+        //printf("Black: %d\nWhite: %d\n",BWins, WWins);  //remove
+        //free(b); //remove
     }
     return 0;
 }
