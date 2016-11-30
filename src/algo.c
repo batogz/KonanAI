@@ -7,7 +7,7 @@ Board **branches(Board *b, char turn, char *moves){
         Board **allMoves = calloc(2, sizeof(Board*));
         for (int i = 0; i < 2; i++){
             allMoves[i] = calloc(1, sizeof(Board));
-            memcpy(allMoves[i]->board, b->board, sizeof(Board));
+            memcpy(allMoves[i]->board, b->board, sizeof(b->board));
             allMoves[i]->blackThenWhite = b->blackThenWhite;
             strncpy(move, (moves + 2*i), 2);
             makeMove(move, allMoves[i]);       
@@ -17,13 +17,12 @@ Board **branches(Board *b, char turn, char *moves){
     }
     else{
         numberOfMoves /= 5;
-        Board **allMoves = calloc(numberOfMoves+1, sizeof(Board*));
+        Board **allMoves = calloc(numberOfMoves, sizeof(Board*));
         for (int i = 0; i < numberOfMoves; i++){
             allMoves[i] = calloc(1, sizeof(Board));
             memcpy(allMoves[i]->board, b->board, sizeof(b->board));
             allMoves[i]->blackThenWhite = b->blackThenWhite;
             strncpy(move, (moves + 5*i), 5);
-            printf("%s\n", move);
             makeMove(move, allMoves[i]);       
         }
         free(move);
@@ -66,9 +65,9 @@ int negaMax(Board *b, int depth, char turn, int A, int B, double tTime,  time_t 
             free(allMoves);
             free(moves);
             return A;
-        }else{
-            free(allMoves[i]);
         }
+
+        free(allMoves[i]);
     }
     free(allMoves);
     free(moves);
@@ -130,5 +129,3 @@ char *randomMove(Board *b, char turn){
     free(moves);
     return move;
 }
-
-
