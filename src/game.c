@@ -276,7 +276,7 @@ int numberOfMoves(Board *b, char turn){
 }
 
 char *makeMoveNotation(int i1, int j1, int i2, int j2){
-    char *move = calloc(5, sizeof(char));
+    char *move = calloc(6, sizeof(char));
     char *colLetters = "ABCDEFGH";   
     char *rowNumbers = "87654321";    
     if (i2 < 0) i2 += 8;
@@ -288,6 +288,7 @@ char *makeMoveNotation(int i1, int j1, int i2, int j2){
     move[2] = '-';
     move[3] = colLetters[i2];
     move[4] = rowNumbers[j2];
+    printf("move: %s\n", move);
     return move; 
 }
 
