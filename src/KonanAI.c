@@ -9,8 +9,7 @@
 
 int test(char * filepath){
     Board *b = makeBoard(filepath);
-    makeMove("D8-D2", b);
-    printBoard(b);
+    printf("%d\n", numberOfMoves(b, 'B'));
     /*    
     char * moves;
     Board ** boardStates;
@@ -102,8 +101,8 @@ int main(int argc, char *argv[]){
     if (argc != 3)
         return 1;
     else{    
-        //test(argv[1]);
-        char *fp = argv[1];
+        test(argv[1]);
+        /*char *fp = argv[1];
         char turn = *argv[2];
         Board *b = makeBoard(fp);
         //printBoard(b);
@@ -147,7 +146,7 @@ int main(int argc, char *argv[]){
         //turn = *argv[2]; //remove
         //}//remove
         //printf("Black: %d\nWhite: %d\n",BWins, WWins);  //remove
-        //free(b); //remove
+        //free(b); //remove*/
     }
     return 0;
 }
