@@ -12,7 +12,7 @@ int test(char * filepath){
     printf("%d\n", numberOfMoves(b, 'B'));
     printf("%s\n", validMoves(b, 'B'));
     printBoard(b);
-    /*    
+    /*   
     char * moves;
     Board ** boardStates;
     printBoard(b);
@@ -131,18 +131,18 @@ int main(int argc, char *argv[]){
             makeMove(oppMove, b);
             memset(oppMove, '\0', 6);
             
-            (turn == 'B') ? (turn = 'W') : (turn = 'B');
-            if (numberOfMoves(b, turn) == 0){
+            //(turn == 'B') ? (turn = 'W') : (turn = 'B');
+            //if (numberOfMoves(b, turn) == 0){
                 //printf("%c loses game %d\n", turn, i+1);
                 //BWins++; //remove
-                break;
-            }
+                //break;
+            //}
             //move = randomMove(b, turn); //negaMaxSearch(b, turn, THINKINGTIME);
             //printf("%c's move: %s\n", turn, move);
             //makeMove(move, b);
             //printBoard(b);
             //free(move);
-            (turn == 'B') ? (turn = 'W') : (turn = 'B');
+            //(turn == 'B') ? (turn = 'W') : (turn = 'B');
         }
         free(oppMove);
         free(b);

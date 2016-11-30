@@ -218,10 +218,10 @@ char *makeMoveNotation(int i1, int j1, int i2, int j2){
     char *move = calloc(6, sizeof(char));
     char *colLetters = "ABCDEFGH";   
     char *rowNumbers = "87654321";
-    if (i1 < 0) i1 += 8;
-    else if (i1 > 8) i1 -= 8;
-    if (j1 < 0) j1 += 8;
-    else if (j1 > 8) j1 -= 8;  
+    //if (i1 < 0) i1 += 8;
+    //else if (i1 > 8) i1 -= 8;
+    //if (j1 < 0) j1 += 8;
+    //else if (j1 > 8) j1 -= 8;  
     if (i2 < 0) i2 += 8;
     else if (i2 > 8) i2 -= 8;
     if (j2 < 0) j2 += 8;
