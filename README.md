@@ -1,2 +1,2 @@
 # KonanAI
-To compile, run the make directory in the src folder, the executable will be called KonanAI.
+To compile, run the make command in the KonanAI/src directory, the executable will be called KonanAI.
