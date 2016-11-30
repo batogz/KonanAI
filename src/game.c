@@ -118,7 +118,7 @@ int numberOfMoves(Board *b, char turn){
     }
     if (boardSum == 2040)
         numberOfMoves = 2;
-    else if (turn == 'W' && (boardSum == 2024 || boardSum == 2032))
+    else if ((boardSum == 2024 || boardSum == 2032) && turn == 'W' )
         numberOfMoves = 2;
     else{
         int starti;
@@ -129,6 +129,7 @@ int numberOfMoves(Board *b, char turn){
             starti = 1;
         for (int j = 0; j < 2; j++){
             int8_t checkDown = b->board[j] & b->board[j+1] & ~b->board[j+2];
+            int8_t checkDown2 = b->board[j+3] & ~b->board[j+4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     numberOfMoves++; //right jump
@@ -175,7 +176,13 @@ int numberOfMoves(Board *b, char turn){
         }
         for (int j = 2; j < 6; j++){ 
             int8_t checkDown = b->board[j] & b->board[j+1] & ~b->board[j+2];
+            int8_t checkDown2 = 0;
+            if(j+4 < 8)
+                 checkDown2 = b->board[j+3] & ~b->board[j+4];
             int8_t checkAbove = b->board[j] & b->board[j-1] & ~b->board[j-2];
+            int8_t checkAbove2 = 0;
+            if((j-3) > 0)
+                 checkAbove2 = b->board[j-3] & ~b->board[j-4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     numberOfMoves++; //right jump
@@ -228,6 +235,7 @@ int numberOfMoves(Board *b, char turn){
         }
         for (int j = 6; j < 8 ; j++){
             int8_t checkAbove = b->board[j] & b->board[j-1] & ~b->board[j-2];
+            int8_t checkAbove2 = b->board[j-3] & ~b->board[j-4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     numberOfMoves++; //right jump
@@ -279,7 +287,11 @@ int numberOfMoves(Board *b, char turn){
 char *makeMoveNotation(int i1, int j1, int i2, int j2){
     char *move = calloc(5, sizeof(char));
     char *colLetters = "ABCDEFGH";   
-    char *rowNumbers = "87654321";    
+    char *rowNumbers = "87654321";
+    //if (i1 < 0) i1 += 8;
+    //else if (i1 > 8) i1 -= 8;
+    //if (j1 < 0) j1 += 8;
+    //else if (j1 > 8) j1 -= 8;  
     if (i2 < 0) i2 += 8;
     else if (i2 > 8) i2 -= 8;
     if (j2 < 0) j2 += 8;
@@ -330,6 +342,7 @@ char *validMoves(Board *b, char turn){
             starti = 1;
         for (int j = 0; j < 2; j++){
             int8_t checkDown = b->board[j] & b->board[j+1] & ~b->board[j+2];
+            int8_t checkDown2 = b->board[j+3] & ~b->board[j+4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     //right jump
@@ -406,7 +419,13 @@ char *validMoves(Board *b, char turn){
         }
         for (int j = 2; j < 6; j++){ 
             int8_t checkDown = b->board[j] & b->board[j+1] & ~b->board[j+2];
+            int8_t checkDown2 = 0;
+            if(j+4 < 8)
+                 checkDown2 = b->board[j+3] & ~b->board[j+4];
             int8_t checkAbove = b->board[j] & b->board[j-1] & ~b->board[j-2];
+            int8_t checkAbove2 = 0;
+            if((j-3) > 0)
+                 checkAbove2 = b->board[j-3] & ~b->board[j-4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     //right jump
@@ -499,6 +518,7 @@ char *validMoves(Board *b, char turn){
         }
         for (int j = 6; j < 8 ; j++){
             int8_t checkAbove = b->board[j] & b->board[j-1] & ~b->board[j-2];
+            int8_t checkAbove2 = b->board[j-3] & ~b->board[j-4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     //right jump
