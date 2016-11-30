@@ -122,7 +122,7 @@ int main(int argc, char *argv[]){
              
             move = negaMaxSearch(b, turn, THINKINGTIME);
             makeMove(move, b);
-            printBoard(b);
+            //printBoard(b);
             printf("%s\n", move);
             free(move);
             
