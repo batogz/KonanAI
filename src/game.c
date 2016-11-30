@@ -28,21 +28,22 @@ Board *makeBoard(char *filepath){
 }
 
 int printBoard(Board *b){
-    printf("+--------+\n");
+    fprintf(stderr, "  ABCDEFGH\n");
+    fprintf(stderr, " +--------+\n");
     for (int j = 0; j < 8; j++){
-        printf("|");
+        fprintf(stderr, "%d|", 8-j);
         for (int i = 0; i < 8; i++){
             if ((b->board[j] & (1<<(7-i))) == (1<<(7-i))){
-                if (b->blackThenWhite && i%2 == j%2) printf("B");
-                else if (b->blackThenWhite && i%2 != j%2) printf("W");
-                else if (!b->blackThenWhite && i%2 == j%2) printf("B");
-                else printf("W");
+                if (b->blackThenWhite && i%2 == j%2) fprintf(stderr, "B");
+                else if (b->blackThenWhite && i%2 != j%2) fprintf(stderr, "W");
+                else if (!b->blackThenWhite && i%2 == j%2) fprintf(stderr, "B");
+                else fprintf(stderr, "W");
             }
-            else printf("O");
+            else fprintf(stderr, "_");
         }
-        printf("|\n");
+        fprintf(stderr, "|\n");
     }
-    printf("+--------+\n");
+    fprintf(stderr, " +--------+\n");
     return 0;
 }
 
