@@ -160,8 +160,7 @@ int numberOfMoves(Board *b, char turn){
             for (int i = starti + 6; i < 8; i+=2){
                 if ((checkDown & (1<<(7-i))) == (1<<(7-i))){
                     numberOfMoves++; //down jump
-                    int8_t checkDoubleDown = -1;
-                    if (j<4) checkDoubleDown = b->board[j] & b->board[j+3] & ~b->board[j+4];
+                    int8_t checkDoubleDown = b->board[j] & b->board[j+3] & ~b->board[j+4];
                     if (checkDoubleDown>0 && (checkDoubleDown & (1<<(7-i))) == (1<<(7-i))){
                         numberOfMoves++;
                         int8_t checkTripleDown = b->board[j] & b->board[j+5] & ~b->board[j+6];
@@ -277,7 +276,7 @@ int numberOfMoves(Board *b, char turn){
 }
 
 char *makeMoveNotation(int i1, int j1, int i2, int j2){
-    char *move = calloc(6, sizeof(char));
+    char *move = calloc(5, sizeof(char));
     char *colLetters = "ABCDEFGH";   
     char *rowNumbers = "87654321";    
     if (i2 < 0) i2 += 8;
@@ -293,7 +292,6 @@ char *makeMoveNotation(int i1, int j1, int i2, int j2){
 }
 
 char *validMoves(Board *b, char turn){
-
     int boardSum = 0;
     for (int i = 0; i < 8; i++){
         boardSum += b->board[i];

@@ -1,13 +1,21 @@
 #include"algo.h"
 
 Board **branches(Board *b, char turn, char *moves){
-    char *move = calloc(6, sizeof(char));
+    char *move = calloc(5, sizeof(char));
     int numberOfMoves = strlen(moves);
     if (numberOfMoves == 4){
         Board **allMoves = calloc(2, sizeof(Board*));
         for (int i = 0; i < 2; i++){
             allMoves[i] = calloc(1, sizeof(Board));
-            memcpy(allMoves[i]->board, b->board, sizeof(b->board));
+            //memcpy(allMoves[i]->board, b->board, sizeof(Board));
+            allMoves[i]->board[0] = b->board[0];
+            allMoves[i]->board[1] = b->board[1];
+            allMoves[i]->board[2] = b->board[2];
+            allMoves[i]->board[3] = b->board[3];
+            allMoves[i]->board[4] = b->board[4];
+            allMoves[i]->board[5] = b->board[5];
+            allMoves[i]->board[6] = b->board[6];
+            allMoves[i]->board[7] = b->board[7];
             allMoves[i]->blackThenWhite = b->blackThenWhite;
             strncpy(move, (moves + 2*i), 2);
             makeMove(move, allMoves[i]);       
