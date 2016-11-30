@@ -28,21 +28,22 @@ Board *makeBoard(char *filepath){
 }
 
 int printBoard(Board *b){
-    printf("+--------+\n");
+    fprintf(stderr, "  ABCDEFGH\n");
+    fprintf(stderr, " +--------+\n");
     for (int j = 0; j < 8; j++){
-        printf("|");
+        fprintf(stderr, "%d|", 8-j);
         for (int i = 0; i < 8; i++){
             if ((b->board[j] & (1<<(7-i))) == (1<<(7-i))){
-                if (b->blackThenWhite && i%2 == j%2) printf("B");
-                else if (b->blackThenWhite && i%2 != j%2) printf("W");
-                else if (!b->blackThenWhite && i%2 == j%2) printf("B");
-                else printf("W");
+                if (b->blackThenWhite && i%2 == j%2) fprintf(stderr, "B");
+                else if (b->blackThenWhite && i%2 != j%2) fprintf(stderr, "W");
+                else if (!b->blackThenWhite && i%2 == j%2) fprintf(stderr, "B");
+                else fprintf(stderr, "W");
             }
-            else printf("O");
+            else fprintf(stderr, "_");
         }
-        printf("|\n");
+        fprintf(stderr, "|\n");
     }
-    printf("+--------+\n");
+    fprintf(stderr, " +--------+\n");
     return 0;
 }
 
@@ -104,9 +105,9 @@ int numberOfMoves(Board *b, char turn){
                 }
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i))){
                     numberOfMoves++; //left jump
-                    if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
-                        numberOfMoves++; //left double jump
-                    }
+                    //if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
+                        //numberOfMoves++; //left double jump
+                    //}
                 }
                 if ((checkDown & (1<<(7-i))) == (1<<(7-i))){
                     numberOfMoves++; //down jump
@@ -143,9 +144,9 @@ int numberOfMoves(Board *b, char turn){
                 }
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i))){
                     numberOfMoves++; //left jump
-                    if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
-                        numberOfMoves++; //left double jump
-                    }
+                    //if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
+                        //numberOfMoves++; //left double jump
+                    //}
                 }
                 if ((checkDown & (1<<(7-i))) == (1<<(7-i))){
                     numberOfMoves++; //down jump
@@ -183,14 +184,14 @@ int numberOfMoves(Board *b, char turn){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     numberOfMoves++; //right jump
                     if ((i < 4) && (((b->board[j]) & (3<<(3-i))) ^ (1<<(3-i))) == (3<<(3-i))){
-                        numberOfMoves++; //right jump
+                        numberOfMoves++; //right double jump
                     }
                 }
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i))){
                     numberOfMoves++; //left jump
-                    if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
-                        numberOfMoves++; //left jump
-                    }
+                    //if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
+                        //numberOfMoves++; //left double jump
+                    //}
                 }
                 if ((checkAbove & (1<<(7-i))) == (1<<(7-i))){
                     numberOfMoves++; //up jump
@@ -216,7 +217,11 @@ int numberOfMoves(Board *b, char turn){
 char *makeMoveNotation(int i1, int j1, int i2, int j2){
     char *move = calloc(6, sizeof(char));
     char *colLetters = "ABCDEFGH";   
-    char *rowNumbers = "87654321";    
+    char *rowNumbers = "87654321";
+    if (i1 < 0) i1 += 8;
+    else if (i1 > 8) i1 -= 8;
+    if (j1 < 0) j1 += 8;
+    else if (j1 > 8) j1 -= 8;  
     if (i2 < 0) i2 += 8;
     else if (i2 > 8) i2 -= 8;
     if (j2 < 0) j2 += 8;
@@ -268,24 +273,43 @@ char *validMoves(Board *b, char turn){
             starti = 1;
         for (int j = 0; j < 2; j++){
             int8_t checkDown = b->board[j] & b->board[j+1] & ~b->board[j+2];
+            int8_t checkDown2 = b->board[j+3] & ~b->board[j+4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     //right jump
                     moveNotation = makeMoveNotation(i, j, i+2, j);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((i < 4) && ((((b->board[j]) & (3<<(3-i))) ^ (1<<(3-i))) == (3<<(3-i)))){
+                        //right double jump
+                        moveNotation = makeMoveNotation(i, j, i+4, j);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i))){
                     //left jump
                     moveNotation = makeMoveNotation(i+2, j, i, j);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    //if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
+                        //left double jump
+                        //moveNotation = makeMoveNotation(i+2, j, i-2, j);
+                        //strcat(moves, moveNotation);
+                        //free(moveNotation);
+                    //}
                 }
                 if ((checkDown & (1<<(7-i))) == (1<<(7-i))){
                     //down jump
                     moveNotation = makeMoveNotation(i, j, i, j+2);
                     strcat(moves, moveNotation);
-                    free(moveNotation); 
+                    free(moveNotation);
+                    if ((checkDown2 & (1<<(7-i))) == (1<<(7-i))){
+                        //down double jump
+                        moveNotation = makeMoveNotation(i, j, i, j+4);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
             }
             for (int i = starti + 6; i < 8; i+=2){
@@ -294,37 +318,73 @@ char *validMoves(Board *b, char turn){
                     moveNotation = makeMoveNotation(i, j, i, j+2);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((checkDown2 & (1<<(7-i))) == (1<<(7-i))){
+                        //down double jump
+                        moveNotation = makeMoveNotation(i, j, i, j+4);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
             }
             starti ^= 1;
         }
         for (int j = 2; j < 6; j++){ 
             int8_t checkDown = b->board[j] & b->board[j+1] & ~b->board[j+2];
+            int8_t checkDown2 = 0;
+            if(j+4 < 8)
+                 checkDown2 = b->board[j+3] & ~b->board[j+4];
             int8_t checkAbove = b->board[j] & b->board[j-1] & ~b->board[j-2];
+            int8_t checkAbove2 = 0;
+            if((j-3) > 0)
+                 checkAbove2 = b->board[j-3] & ~b->board[j-4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     //right jump
                     moveNotation = makeMoveNotation(i, j, i+2, j);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((i < 4) && ((((b->board[j]) & (3<<(3-i))) ^ (1<<(3-i))) == (3<<(3-i)))){
+                        //right double jump
+                        moveNotation = makeMoveNotation(i, j, i+4, j);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i))){
                     //left jump
                     moveNotation = makeMoveNotation(i+2, j, i, j);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    //if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
+                        //left double jump
+                        //moveNotation = makeMoveNotation(i+2, j, i-2, j);
+                        //strcat(moves, moveNotation);
+                        //free(moveNotation);
+                    //}
                 }
                 if ((checkDown & (1<<(7-i))) == (1<<(7-i))){
                     //down jump
                     moveNotation = makeMoveNotation(i, j, i, j+2);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((checkDown2 & (1<<(7-i))) == (1<<(7-i))){
+                        //down double jump
+                        moveNotation = makeMoveNotation(i, j, i, j+4);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
                 if ((checkAbove & (1<<(7-i))) == (1<<(7-i))){
                     //up jump
                     moveNotation = makeMoveNotation(i, j, i, j-2);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((checkAbove2 & (1<<(7-i))) == (1<<(7-i))){
+                        //up double jump
+                        moveNotation = makeMoveNotation(i, j, i, j-4);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
             }
             for (int i = starti + 6; i < 8; i+=2){
@@ -333,36 +393,66 @@ char *validMoves(Board *b, char turn){
                     moveNotation = makeMoveNotation(i, j, i, j+2);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((checkDown2 & (1<<(7-i))) == (1<<(7-i))){
+                        //down double jump
+                        moveNotation = makeMoveNotation(i, j, i, j+4);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
                 if ((checkAbove & (1<<(7-i))) == (1<<(7-i))){
                     //up jump
                     moveNotation = makeMoveNotation(i, j, i, j-2);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((checkAbove2 & (1<<(7-i))) == (1<<(7-i))){
+                        //up double jump
+                        moveNotation = makeMoveNotation(i, j, i, j-4);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
             }
             starti ^= 1;
         }
         for (int j = 6; j < 8 ; j++){
             int8_t checkAbove = b->board[j] & b->board[j-1] & ~b->board[j-2];
+            int8_t checkAbove2 = b->board[j-3] & ~b->board[j-4];
             for (int i = starti; i < 6; i+=2){
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(5-i))) == (7<<(5-i))){
                     //right jump
                     moveNotation = makeMoveNotation(i, j, i+2, j);                  
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((i < 4) && ((((b->board[j]) & (3<<(3-i))) ^ (1<<(3-i))) == (3<<(3-i)))){
+                        //right double jump
+                        moveNotation = makeMoveNotation(i, j, i+4, j);
+                        strcat(moves, moveNotation);
+                    }
                 }
                 if ((((b->board[j]) & (7<<(5-i))) ^ (1<<(7-i))) == (7<<(5-i))){
                     //left jump
                     moveNotation = makeMoveNotation(i+2, j, i, j);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    //if ((i > 1 && i < 6) && ((((b->board[j]) & (3<<(6-i))) ^ (2<<(6-i))) == (3<<(6-i)))){
+                        //left double jump
+                        //moveNotation = makeMoveNotation(i+2, j, i-2, j);
+                        //strcat(moves, moveNotation);
+                        //free(moveNotation);
+                    //}
                 }
                 if ((checkAbove & (1<<(7-i))) == (1<<(7-i))){
                     //up jump
                     moveNotation = makeMoveNotation(i, j, i, j-2);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((checkAbove2 & (1<<(7-i))) == (1<<(7-i))){
+                        //up double jump
+                        moveNotation = makeMoveNotation(i, j, i, j-4);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
             }
             for (int i = starti + 6; i < 8; i+=2){
@@ -371,6 +461,12 @@ char *validMoves(Board *b, char turn){
                     moveNotation = makeMoveNotation(i, j, i, j-2);
                     strcat(moves, moveNotation);
                     free(moveNotation);
+                    if ((checkAbove2 & (1<<(7-i))) == (1<<(7-i))){
+                        //up double jump
+                        moveNotation = makeMoveNotation(i, j, i, j-4);
+                        strcat(moves, moveNotation);
+                        free(moveNotation);
+                    }
                 }
             }
             starti ^= 1;

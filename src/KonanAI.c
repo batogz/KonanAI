@@ -10,6 +10,8 @@
 int test(char * filepath){
     Board *b = makeBoard(filepath);
     printf("%d\n", numberOfMoves(b, 'B'));
+    printf("%s\n", validMoves(b, 'B'));
+    printBoard(b);
     /*    
     char * moves;
     Board ** boardStates;
@@ -101,8 +103,8 @@ int main(int argc, char *argv[]){
     if (argc != 3)
         return 1;
     else{    
-        test(argv[1]);
-        /*char *fp = argv[1];
+        //test(argv[1]);
+        char *fp = argv[1];
         char turn = *argv[2];
         Board *b = makeBoard(fp);
         //printBoard(b);
@@ -120,9 +122,10 @@ int main(int argc, char *argv[]){
              
             move = negaMaxSearch(b, turn, THINKINGTIME);
             makeMove(move, b);
+            printBoard(b);
             printf("%s\n", move);
             free(move);
-            //printBoard(b);
+            
 
             scanf("%s", oppMove);
             makeMove(oppMove, b);
@@ -136,6 +139,7 @@ int main(int argc, char *argv[]){
             }
             //move = randomMove(b, turn); //negaMaxSearch(b, turn, THINKINGTIME);
             //printf("%c's move: %s\n", turn, move);
+            //makeMove(move, b);
             //printBoard(b);
             //free(move);
             (turn == 'B') ? (turn = 'W') : (turn = 'B');
@@ -146,7 +150,7 @@ int main(int argc, char *argv[]){
         //turn = *argv[2]; //remove
         //}//remove
         //printf("Black: %d\nWhite: %d\n",BWins, WWins);  //remove
-        //free(b); //remove*/
+        //free(b); //remove
     }
     return 0;
 }
