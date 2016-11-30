@@ -121,26 +121,30 @@ int main(int argc, char *argv[]){
              
             move = negaMaxSearch(b, turn, THINKINGTIME);
             makeMove(move, b);
+            printBoard(b);
             printf("%s\n", move);
             free(move);
-            //printBoard(b);
-
+            
             scanf("%s", oppMove);
             makeMove(oppMove, b);
+            printBoard(b);
             memset(oppMove, '\0', 6);
             
-            (turn == 'B') ? (turn = 'W') : (turn = 'B');
-            if (numberOfMoves(b, turn) == 0){
+            //(turn == 'B') ? (turn = 'W') : (turn = 'B');
+            //if (numberOfMoves(b, turn) == 0){
                 //printf("%c loses game %d\n", turn, i+1);
                 //BWins++; //remove
-                break;
-            }
+                //break;
+            //}
             //move = randomMove(b, turn); //negaMaxSearch(b, turn, THINKINGTIME);
             //printf("%c's move: %s\n", turn, move);
             //printBoard(b);
             //free(move);
-            (turn == 'B') ? (turn = 'W') : (turn = 'B');
+            //(turn == 'B') ? (turn = 'W') : (turn = 'B');
         }
+        char oTurn;
+        (turn == 'B') ? (oTurn = 'W') : (oTurn = 'B');
+        printf("Player: %c won\n", oTurn);
         free(oppMove);
         free(b);
         //b = makeBoard(fp); //remove
